@@ -10,8 +10,7 @@ The library automatically scans ```public float``` variables defined in the sket
  * makes them available over OSC as server (sender/host)
  * makes it easy to map local variables with remote variables as a client (receiver/client)
 
-Basic usage demo:
-[demo](web/OSCTapDemo.mov)
+Have a look at this [basic usage demo](https://github.com/orgicus/OSCTap/web/OSCTapDemo.mov)
 
 Dependencies
 ============
