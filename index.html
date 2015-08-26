@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>OSCTap by orgicus</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>OSCTap</h1>
+          <h2>Basic float sharing over the network using Processing</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/orgicus/OSCTap/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/orgicus/OSCTap/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/orgicus/OSCTap" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="what-is-osctap" class="anchor" href="#what-is-osctap" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is OSCTap</h1>
+
+<p>OSCTap is a small utility that makes it simpler to floating point data over the network using the OSC protocol.</p>
+
+<p>The library automatically scans <code>public float</code> variables defined in the sketch:</p>
+
+<ul>
+<li>makes them available over OSC as server (sender/host)</li>
+<li>makes it easy to map local variables with remote variables as a client (receiver/client)</li>
+</ul>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<p>Check out the <a href="https://github.com/orgicus/OSCTap/raw/master/web/OSCTapDemo.mov">basic usage demo</a></p>
+
+<p>Additionally see the Sender/Receiver.</p>
+
+<p>Minimal Sender, continuosly sending a value:</p>
+
+<div class="highlight highlight-java"><pre><span class="pl-k">import</span> <span class="pl-smi">oscP5.*</span>;
+<span class="pl-k">import</span> <span class="pl-smi">tap.osc.OSCSender</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">float</span> x <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+<span class="pl-smi">OSCSender</span> s;
+
+<span class="pl-k">void</span> setup(){
+  size(<span class="pl-c1">400</span>,<span class="pl-c1">400</span>);
+  s <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">OSCSender</span>(<span class="pl-v">this</span>);
+}
+<span class="pl-k">void</span> draw(){
+  x <span class="pl-k">=</span> constrain((<span class="pl-k">float</span>)mouseX<span class="pl-k">/</span>width,<span class="pl-c1">0.0</span>,<span class="pl-c1">1.0</span>);
+  s<span class="pl-k">.</span>send(<span class="pl-c1">true</span>);
+  background(x <span class="pl-k">*</span> <span class="pl-c1">255</span>);
+}</pre></div>
+
+<p>Receiver:</p>
+
+<pre><code>import oscP5.*;
+import tap.osc.OSCReceiver;
+
+public float y = 0;
+OSCReceiver r;
+
+void setup(){
+  size(400,400);
+  r = new OSCReceiver(this);
+}
+void draw(){
+  background(255);
+  ellipse(width * .5, y * height, 10,10);
+}
+</code></pre>
+
+<h1>
+<a id="how-does-it-work" class="anchor" href="#how-does-it-work" aria-hidden="true"><span class="octicon octicon-link"></span></a>How does it work</h1>
+
+<p>Initial messaging works by broadcasting across all IPs.
+No need to worry about IPs at this stage, but this isn't efficient
+so it's only used when searching for hosts/sender instances accross the network.</p>
+
+<p>Currently the focus is simply sending a float variable.
+Each message however contains three arguments, the 2nd argument being the actual value.</p>
+
+<p>Based on <a href="http://aloisyang.com">Alois Yang</a>'s suggestion during the <a href="http://gen-av.org">Gen-AV hackathon</a>, 
+we explored the idea of sharing data from Processing to other audio software 
+using <a href="http://cote.cc/blog/using-osculator-as-an-osc-to-midi-bridge">OSCulator to bridge OSC to MIDI</a></p>
+
+<p>I realise the limitation of float values, but for now let's imagine as a creative constraint :)
+A bit of R&amp;D into OSC/MIDI in between is next.</p>
+
+<h1>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h1>
+
+<p>OSCTap relies on the oscP5 library.
+The <a href="https://github.com/orgicus/OSCTap/releases">releases</a> page contains version of the library with or without oscP5
+If you already have oscP5, use the release without oscP5 and be sure import oscP5 in sketches using OSCTap.</p>
+
+<h1>
+<a id="caveats" class="anchor" href="#caveats" aria-hidden="true"><span class="octicon octicon-link"></span></a>Caveats</h1>
+
+<p>This library is in a draft stage at the moment
+(read as 'buggy'/rough on the edges)
+Documentation and more examples will follow.</p>
+        </section>
+
+        <footer>
+          OSCTap is maintained by <a href="https://github.com/orgicus">orgicus</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
